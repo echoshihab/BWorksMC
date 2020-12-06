@@ -1,42 +1,48 @@
-// using System;
-// using System.Net;
-// using System.Threading;
-// using System.Threading.Tasks;
-// using Application.Errors;
-// using MediatR;
-// using Persistence;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Application.Errors;
+using Application.Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
-// namespace Application.Activities
-// {
-//     public class Delete
-//     {
-//         public class Command : IRequest
-//         {
-//             public Guid Id { get; set; }
-//         }
+namespace Application.BloodWorkProfile
+{
+    public class Delete
+    {
+        public class Command : IRequest
+        {
+            public Guid Id { get; set; }
+        }
 
-//         public class Handler : IRequestHandler<Command>
-//         {
-//             private readonly ApplicationDbContext _db;
-//             public Handler(ApplicationDbContext db)
-//             {
-//                 _db = db;
-//             }
+        public class Handler : IRequestHandler<Command>
+        {
+            private readonly DataContext _db;
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext db, IUserAccessor userAccessor)
+            {
+                _db = db;
+                _userAccessor = userAccessor;
+            }
 
-//             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
-//             {
-//                 var activity = await _db.Activities.FindAsync(request.Id);
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var bloodWork = await _db.BloodWorks.FindAsync(request.Id);
 
-//                 if (activity == null) throw new RestException(HttpStatusCode.NotFound, new { activity = "Not Found" });
+                if (bloodWork == null) throw new RestException(HttpStatusCode.NotFound, new { error = "Invalid Request" });
+                var user = await _db.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
+                if (bloodWork.AppUserId != user.Id) throw new RestException(HttpStatusCode.NotFound, new { error = "Invalid Request" });
 
-//                 _db.Activities.Remove(activity);
+                _db.BloodWorks.Remove(bloodWork);
 
-//                 var success = await _db.SaveChangesAsync() > 0;
+                var success = await _db.SaveChangesAsync() > 0;
 
-//                 if (success) return Unit.Value;
+                if (success) return Unit.Value;
 
-//                 throw new Exception("Problem saving changes");
-//             }
-//         }
-//     }
-// }
+                throw new Exception("Problem saving changes");
+            }
+        }
+    }
+}

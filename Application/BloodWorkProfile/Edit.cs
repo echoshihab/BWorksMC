@@ -59,10 +59,10 @@ namespace Application.BloodWorkProfile
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var bloodWork = await _db.BloodWorks.FindAsync(request.Id);
-                if (bloodWork == null) throw new RestException(HttpStatusCode.NotFound, new { bloodWork = "Not Found" });
+                if (bloodWork == null) throw new RestException(HttpStatusCode.NotFound, new { error = "Invalid Request" });
 
                 var user = await _db.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
-                if (bloodWork.AppUserId != user.Id) throw new RestException(HttpStatusCode.NotFound, new { user = "Not Found" });
+                if (bloodWork.AppUserId != user.Id) throw new RestException(HttpStatusCode.NotFound, new { error = "Invalid Request" });
 
                 bloodWork.ExamDate = request.ExamDate;
                 bloodWork.ResultsDate = request.ResultDate;
