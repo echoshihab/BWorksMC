@@ -13,10 +13,16 @@ namespace API.Controllers
 
 
         [HttpGet]
-
         public async Task<ActionResult<List.BloodWorksEnvelope>> List()
         {
             return await Mediator.Send(new List.Query());
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<ActionResult<BloodWorkDto>> Details(Guid id)
+        {
+            return await Mediator.Send(new Details.Query { Id = id });
         }
 
         [HttpPost]
@@ -32,6 +38,8 @@ namespace API.Controllers
             command.Id = id;
             return await Mediator.Send(command);
         }
+
+
 
 
 
