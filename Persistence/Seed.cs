@@ -58,7 +58,7 @@ namespace Persistence
                         Hematocrit = 31.1,
                         WBCellsCount = 1.5,
                         RBCellsCount = 3.5,
-                        AppUserId = 'a'
+                        AppUserId = "a"
 
                     },
                     new BloodWork
@@ -70,7 +70,7 @@ namespace Persistence
                         Hematocrit = 30.1,
                         WBCellsCount = 1.2,
                         RBCellsCount = 3.1,
-                        AppUserId = 'a'
+                        AppUserId = "a"
                     },
                        
                     new BloodWork
@@ -82,7 +82,7 @@ namespace Persistence
                         Hematocrit = 30.5,
                         WBCellsCount = 1.5,
                         RBCellsCount = 3.5,
-                        AppUserId = 'a'
+                        AppUserId = "a"
                     },
                    
                     new BloodWork
@@ -94,7 +94,7 @@ namespace Persistence
                         Hematocrit = 45.1,
                         WBCellsCount = 3.5,
                         RBCellsCount = 2.5,
-                        AppUserId = 'b'
+                        AppUserId = "b"
 
                     },
                     new BloodWork
@@ -106,7 +106,7 @@ namespace Persistence
                         Hematocrit = 45.5,
                         WBCellsCount = 2.4,
                         RBCellsCount = 1.9,
-                        AppUserId = 'b'
+                        AppUserId = "b"
 
                     },
                        
@@ -119,7 +119,7 @@ namespace Persistence
                         Hematocrit = 44.5,
                         WBCellsCount = 2.3,
                         RBCellsCount = 2.1,
-                        AppUserId = 'b'
+                        AppUserId = "b"
 
                     },
 

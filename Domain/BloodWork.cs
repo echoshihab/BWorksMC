@@ -13,7 +13,7 @@ namespace Domain
         public double WBCellsCount { get; set; }
         public double RBCellsCount { get; set; }
         public AppUser AppUser { get; set; }
-        public int AppUserId { get; set; }
+        public string AppUserId { get; set; }
 
     }
 }

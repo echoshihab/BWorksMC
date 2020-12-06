@@ -19,7 +19,7 @@ namespace API
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-      //migrate at startup
+            //migrate at startup
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -28,7 +28,7 @@ namespace API
                     var _db = services.GetRequiredService<DataContext>();
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     _db.Database.Migrate();
-                    // TODO: seed data here
+                    Seed.SeedData(_db, userManager).Wait();
                 }
                 catch (Exception ex)
                 {
