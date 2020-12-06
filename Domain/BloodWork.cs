@@ -4,13 +4,16 @@ namespace Domain
 {
     public class BloodWork
     {
+        public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime ExamDate { get; set; }
         public DateTime ResultsDate { get; set; }
-        public decimal Hemoglobin { get; set; }
-        public decimal Hematocrit { get; set; }
-        public decimal WBCellsCount { get; set; }
-        public decimal RBCellsCount { get; set; }
+        public double Hemoglobin { get; set; }
+        public double Hematocrit { get; set; }
+        public double WBCellsCount { get; set; }
+        public double RBCellsCount { get; set; }
+        public AppUser AppUser { get; set; }
+        public int AppUserId { get; set; }
 
     }
 }
