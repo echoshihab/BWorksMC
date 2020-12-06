@@ -4,7 +4,7 @@ namespace Domain
 {
     public class BloodWork
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime ExamDate { get; set; }
         public DateTime ResultsDate { get; set; }

@@ -16,7 +16,7 @@ namespace Application.BloodWorkProfile
         public class BloodWorksEnvelope
         {
             public List<BloodWorkDto> BloodWorks { get; set; }
-            public int BloodWorkscount { get; set; }
+            public int BloodWorksCount { get; set; }
         }
         public class Query : IRequest<BloodWorksEnvelope>
         {
@@ -44,7 +44,7 @@ namespace Application.BloodWorkProfile
                                 .AsQueryable();
 
 
-                queryable.Where(x => x.AppUser.UserName == _userAccessor.GetCurrentUserName());
+                queryable = queryable.Where(x => x.AppUser.UserName == _userAccessor.GetCurrentUserName());
 
 
                 var bloodWorks = await queryable.ToListAsync();
@@ -55,7 +55,7 @@ namespace Application.BloodWorkProfile
                 return new BloodWorksEnvelope
                 {
                     BloodWorks = _mapper.Map<List<BloodWork>, List<BloodWorkDto>>(bloodWorks),
-                    BloodWorkscount = queryable.Count()
+                    BloodWorksCount = queryable.Count()
                 };
 
 

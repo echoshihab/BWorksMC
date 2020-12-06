@@ -94,7 +94,6 @@ namespace API
             app.UseCors(policy => policy
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
-                                .WithOrigins("https://localhost:3000")
                                 .AllowCredentials());
 
             app.UseAuthentication();
