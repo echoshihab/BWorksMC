@@ -1,73 +1,85 @@
-// using System;
-// using System.Net;
-// using System.Threading;
-// using System.Threading.Tasks;
-// using Application.Errors;
-// using FluentValidation;
-// using MediatR;
-// using Persistence;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Application.Errors;
+using Application.Interfaces;
+using Domain;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
-// namespace Application.Activities
-// {
-//     public class Edit
-//     {
-//         public class Command : IRequest
-//         {
-//             public Guid Id { get; set; }
-//             public string Title { get; set; }
-//             public string Description { get; set; }
-
-//             public string Category { get; set; }
-//             public DateTime? Date { get; set; }
-//             public string City { get; set; }
-//             public string Venue { get; set; }
-
-
-//         }
+namespace Application.BloodWorkProfile
+{
+    public class Edit
+    {
+        public class Command : IRequest
+        {
+            public Guid Id { get; set; }
+            public DateTime ExamDate { get; set; }
+            public DateTime ResultDate { get; set; }
+            public double Hemoglobin { get; set; }
+            public double Hematocrit { get; set; }
+            public double WBCellsCount { get; set; }
+            public double RBCellsCount { get; set; }
 
 
-//         public class CommandValidator : AbstractValidator<Command>
-//         {
-//             public CommandValidator()
-//             {
-//                 RuleFor(x => x.Title).NotEmpty();
-//                 RuleFor(x => x.Description).NotEmpty();
-//                 RuleFor(x => x.Category).NotEmpty();
-//                 RuleFor(x => x.Date).NotEmpty();
-//                 RuleFor(x => x.City).NotEmpty();
-//                 RuleFor(x => x.Venue).NotEmpty();
+        }
 
-//             }
-//         }
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            private bool PassDateValidation(DateTime date)
+            {
+                return !date.Equals(default(DateTime));
+            }
+            public CommandValidator()
+            {
+                RuleFor(x => x.ExamDate).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
+                RuleFor(x => x.ResultDate).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
+                RuleFor(x => x.Hemoglobin).NotNull().GreaterThan(0).WithMessage("Must be a valid number");
+                RuleFor(x => x.Hematocrit).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
+                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
+                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
 
-//         public class Handler : IRequestHandler<Command>
-//         {
-//             private readonly ApplicationDbContext _db;
-//             public Handler(ApplicationDbContext db)
-//             {
-//                 _db = db;
-//             }
+            }
 
-//             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
-//             {
-//                 //handler logic
-//                 var activity = await _db.Activities.FindAsync(request.Id);
+        }
+        public class Handler : IRequestHandler<Command>
+        {
+            private readonly DataContext _db;
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext db, IUserAccessor userAccessor)
+            {
+                _userAccessor = userAccessor;
+                _db = db;
+            }
 
-//                 if (activity == null) throw new RestException(HttpStatusCode.NotFound, new { activity = "Not Found" });
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            {
+                var bloodWork = await _db.BloodWorks.FindAsync(request.Id);
+                if (bloodWork == null) throw new RestException(HttpStatusCode.NotFound, new { bloodWork = "Not Found" });
 
-//                 activity.Title = request.Title ?? activity.Title;
-//                 activity.Description = request.Description ?? activity.Description;
-//                 activity.Category = request.Category ?? activity.Category;
-//                 activity.Date = request.Date ?? activity.Date;
-//                 activity.City = request.City ?? activity.City;
-//                 activity.Venue = request.Venue ?? activity.Venue;
+                var user = await _db.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUserName());
+                if (bloodWork.AppUserId != user.Id) throw new RestException(HttpStatusCode.NotFound, new { user = "Not Found" });
 
-//                 var success = await _db.SaveChangesAsync() > 0;
+                bloodWork.ExamDate = request.ExamDate;
+                bloodWork.ResultsDate = request.ResultDate;
+                bloodWork.Hemoglobin = request.Hemoglobin;
+                bloodWork.Hematocrit = request.Hematocrit;
+                bloodWork.WBCellsCount = request.WBCellsCount;
+                bloodWork.RBCellsCount = request.RBCellsCount;
 
-//                 if (success) return Unit.Value;
 
-//                 throw new Exception("Problem saving changes");
-//             }
-//         }
-//     }
-// }
+                var success = await _db.SaveChangesAsync() > 0;
+
+                if (success) return Unit.Value;
+
+                throw new Exception("Problem saving changes");
+            }
+        }
+    }
+}
+
+

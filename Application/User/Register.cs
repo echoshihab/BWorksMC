@@ -65,7 +65,7 @@ namespace Application.User
                 };
 
 
-                //handler logic
+
                 var result = await _userManager.CreateAsync(user, request.Password);
 
                 if (result.Succeeded)

@@ -5,6 +5,7 @@ namespace Application.BloodWorkProfile
     public class BloodWorkDto
     {
 
+        public Guid Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime ExamDate { get; set; }
         public DateTime ResultsDate { get; set; }
