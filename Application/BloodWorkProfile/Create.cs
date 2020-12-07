@@ -17,8 +17,9 @@ namespace Application.BloodWorkProfile
         {
             public Guid Id { get; set; }
             public DateTime DateCreated { get; set; }
+            public string Description { get; set; }
             public DateTime ExamDate { get; set; }
-            public DateTime ResultDate { get; set; }
+            public DateTime ResultsDate { get; set; }
             public double Hemoglobin { get; set; }
             public double Hematocrit { get; set; }
             public double WBCellsCount { get; set; }
@@ -31,17 +32,18 @@ namespace Application.BloodWorkProfile
         {
             private bool PassDateValidation(DateTime date)
             {
-                return !date.Equals(default(DateTime)); 
+                return !date.Equals(default(DateTime));
             }
             public CommandValidator()
             {
+                RuleFor(x => x.Description).NotEmpty().MinimumLength(5).WithMessage("Description with at least 5 characters required");
                 RuleFor(x => x.DateCreated).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
                 RuleFor(x => x.ExamDate).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
-                RuleFor(x => x.ResultDate).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
+                RuleFor(x => x.ResultsDate).NotNull().Must(PassDateValidation).WithMessage("Must be a valid date");
                 RuleFor(x => x.Hemoglobin).NotNull().GreaterThan(0).WithMessage("Must be a valid number");
-                RuleFor(x => x.Hematocrit).NotNull().GreaterThan(0).WithMessage("Must be a valid number");;
-                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number");;
-                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number");;
+                RuleFor(x => x.Hematocrit).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
+                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
+                RuleFor(x => x.WBCellsCount).NotNull().GreaterThan(0).WithMessage("Must be a valid number"); ;
 
             }
 
@@ -63,9 +65,10 @@ namespace Application.BloodWorkProfile
                 var bloodWork = new BloodWork
                 {
                     Id = request.Id,
+                    Description = request.Description,
                     DateCreated = request.DateCreated,
                     ExamDate = request.ExamDate,
-                    ResultsDate = request.ResultDate,
+                    ResultsDate = request.ResultsDate,
                     Hemoglobin = request.Hemoglobin,
                     Hematocrit = request.Hematocrit,
                     WBCellsCount = request.WBCellsCount,

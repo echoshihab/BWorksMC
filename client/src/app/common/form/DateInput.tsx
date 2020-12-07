@@ -22,7 +22,7 @@ const DateInput: React.FC<IProps> = ({
   return (
     <Form.Field error={touched && !!error} type={type} width={width}>
       <DateTimePicker
-        value={input.value || null}
+        value={(input.value && new Date(input.value)) || null}
         onChange={input.onChange}
         onCurrentDateChange={onCurrentDateChange}
         onBlur={input.onBlur}

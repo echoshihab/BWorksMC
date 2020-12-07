@@ -60,9 +60,9 @@ const requests = {
 }
 
 const BloodWorks = {
-  list: (params: URLSearchParams): Promise<IBloodWorksEnvelope> =>
+  list: (): Promise<IBloodWorksEnvelope> =>
     axios
-      .get("/bloodWorks", { params: params })
+      .get("/bloodWorks")
       .then(responseBody),
   details: (id: string) => requests.get(`/bloodWorks/${id}`),
   create: (bloodWork: IBloodWork) => requests.post("/bloodWorks", bloodWork),

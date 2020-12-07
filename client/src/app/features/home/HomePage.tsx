@@ -36,15 +36,15 @@ const HomePage = () => {
             backdropFilter: "brightness(50%)",
           }}
         >
-          <Grid.Row style={{ backgroundColor: "black", height:"10vh"}} >
-
-          </Grid.Row>
+          <Grid.Row
+            style={{ backgroundColor: "black", height: "10vh" }}
+          ></Grid.Row>
           <Grid.Row style={{ backgroundColor: "white" }}>
-            <Divider/>
+            <Divider />
             <Card centered style={{ marginTop: "30vh" }}>
               <Card.Content style={{ backgroundColor: "black" }}>
                 <Card.Header textAlign="center" style={{ color: "white" }}>
-                  Members 
+                  Members
                 </Card.Header>
 
                 <Card.Description textAlign="center" style={{ color: "white" }}>
@@ -53,11 +53,14 @@ const HomePage = () => {
               </Card.Content>
               <Card.Content extra textAlign="center">
                 {user ? (
-                  <Button
-                    color="red"
-                    content="Log out"
-                    onClick={() => logout()}
-                  />
+                  <Button.Group>
+                    <Button
+                      color="red"
+                      content="Log out"
+                      onClick={() => logout()}
+                    />
+                    <Button as={Link} to={"/dashboard"} content="Dashboard" />
+                  </Button.Group>
                 ) : (
                   <Button.Group>
                     <Button
@@ -86,7 +89,7 @@ const HomePage = () => {
       </Grid>
       <Divider style={{ border: "3px solid white" }} />
       <Header textAlign="center" size="huge" style={{ color: "white" }}>
-           View and Manage Your Blood Work Results
+        View and Manage Your Blood Work Results
         <Icon name="user doctor" style={{ color: "white" }} />
       </Header>
     </Container>

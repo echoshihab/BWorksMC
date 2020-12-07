@@ -1,25 +1,31 @@
-import React from "react";
-import { Grid } from "semantic-ui-react";
-
+import React, { useEffect, useContext } from "react";
+import { Container, Grid, Segment } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
+import { RootStoreContext } from "../../../app/stores/rootStore";
+import BloodWorksList from "./BloodWorksList";
+import BloodWorksSearch from "./BloodWorksSearch";
 
+const BloodWorksDashboard = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { loadBloodWorks } = rootStore.bloodWorksStore;
 
-interface IProps {
-  view: string;
-}
-
-const ShiftDashboard: React.FC<IProps> = ({ view }) => {
-
-  
+  useEffect(() => {
+    loadBloodWorks();
+  }, [loadBloodWorks]);
 
   return (
-    <Grid>
-      <Grid.Column width={11} floated="right">
-    
-      
-      </Grid.Column>
-    </Grid>
+    <Container style={{ marginTop: "4em" }}>
+      <Grid>
+        <Grid.Column width={10}>
+          <BloodWorksList />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <BloodWorksSearch />
+        </Grid.Column>
+        <Grid.Column width={10}></Grid.Column>
+      </Grid>
+    </Container>
   );
 };
 
-export default observer(ShiftDashboard);
+export default observer(BloodWorksDashboard);

@@ -9,6 +9,7 @@ export default class UserStore {
   rootStore: RootStore;
 
   constructor(rootStore: RootStore) {
+    makeObservable(this);
     this.rootStore = rootStore;
 
   }
@@ -27,7 +28,7 @@ export default class UserStore {
       });
       this.rootStore.commonStore.setToken(user.token);
       this.rootStore.modalStore.closeModal();
-      history.push("/bloodworks");
+      history.push("/dashboard");
     } catch (error) {
       throw error;
     }
@@ -37,11 +38,11 @@ export default class UserStore {
     try {
       const user = await agent.User.register(values);
       runInAction(() => {
-        // this.user = user;
+         this.user = user;
+      });
         this.rootStore.commonStore.setToken(user.token);
         this.rootStore.modalStore.closeModal();
-        history.push("/bloodworks");
-      });
+        history.push("/dashboard");
     } catch (error) {
       throw error;
     }

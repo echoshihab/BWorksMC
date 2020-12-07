@@ -1,20 +1,25 @@
 import React, { Fragment, useContext, useEffect } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter,
+} from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Container } from "semantic-ui-react";
 import { ToastContainer } from "react-toastify";
 import { RootStoreContext } from "../stores/rootStore";
 import LoadingComponent from "./LoadingComponent";
-import NavBar from "./NavBar";
 import HomePage from "../features/home/HomePage";
 import NotFound from "./NotFound";
-import BloodWorksList from "../features/bloodworks/BloodWorksList";
-import BloodWorksReport from "../features/bloodworks/BloodWorksReport";
 import ModalContainer from "../common/modal/ModalContainer";
 import PrivateRoute from "./PrivateRoute";
+import BloodWorksDashboard from "../features/bloodworks/BloodWorksDashboard";
+import NavBar from "../features/navigation/NavBar";
+import BloodWorksForm from "../features/bloodworks/BloodWorksForm";
+import BloodWorkDetails from "../features/bloodworks/BloodWorkDetails";
 
-
-const App = () => {
+const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
   const { setAppLoaded, token, appLoaded } = rootStore.commonStore;
   const { getUser } = rootStore.userStore;
@@ -24,7 +29,6 @@ const App = () => {
       getUser().finally(() => setAppLoaded());
     } else {
       setAppLoaded();
-
     }
   }, [getUser, setAppLoaded, token]);
 
@@ -43,14 +47,20 @@ const App = () => {
               <NavBar />
               <Switch>
                 <PrivateRoute
-                  path="/bloodworks"
-                  component= {BloodWorksList}
+                  path="/dashboard"
+                  component={BloodWorksDashboard}
                 />
                 <PrivateRoute
-                  path="/report"
-                  component={BloodWorksReport}
+                  path="/bloodWork/:id"
+                  component={BloodWorkDetails}
                 />
-                
+
+                <PrivateRoute
+                  key={location.key} //component reinitializes when the key changes
+                  path={["/addBloodWork", "/manage/:id"]}
+                  component={BloodWorksForm}
+                />
+
                 <Route component={NotFound} />
               </Switch>
             </Fragment>
@@ -62,4 +72,3 @@ const App = () => {
 };
 
 export default withRouter(observer(App));
-
