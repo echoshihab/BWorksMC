@@ -51,8 +51,7 @@ namespace API
 
             services.AddControllers(opt =>
             {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
+
             }).AddFluentValidation(cfg =>
             {
                 cfg.RegisterValidatorsFromAssemblyContaining<Create>();
@@ -98,10 +97,14 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(policy => policy
-                                .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials());
+            app.UseCors(policy =>
+            {
+                policy
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("http://localhost:3000");
+            });
+
 
             app.UseAuthentication();
             app.UseAuthorization();

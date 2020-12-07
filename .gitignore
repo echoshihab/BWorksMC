@@ -354,3 +354,5 @@ wwwroot/
 
 #datbase
 *.db
+*.ico
+*.svg

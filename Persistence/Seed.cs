@@ -54,6 +54,7 @@ namespace Persistence
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today,
                         ResultsDate = DateTime.Today,
+                        Description = "Description One",
                         Hemoglobin = 10.8,
                         Hematocrit = 31.1,
                         WBCellsCount = 1.5,
@@ -66,30 +67,33 @@ namespace Persistence
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today.AddDays(-3),
                         ResultsDate = DateTime.Today.AddDays(-1),
+                        Description = "Description Two",
                         Hemoglobin = 10.4,
                         Hematocrit = 30.1,
                         WBCellsCount = 1.2,
                         RBCellsCount = 3.1,
                         AppUserId = "a"
                     },
-                       
+
                     new BloodWork
                     {
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today.AddDays(-10),
                         ResultsDate = DateTime.Today.AddDays(-9),
+                        Description = "Description Three",
                         Hemoglobin = 10.5,
                         Hematocrit = 30.5,
                         WBCellsCount = 1.5,
                         RBCellsCount = 3.5,
                         AppUserId = "a"
                     },
-                   
+
                     new BloodWork
                     {
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today,
                         ResultsDate = DateTime.Today,
+                        Description = "Description Four",
                         Hemoglobin = 12.8,
                         Hematocrit = 45.1,
                         WBCellsCount = 3.5,
@@ -102,6 +106,7 @@ namespace Persistence
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today.AddDays(-9),
                         ResultsDate = DateTime.Today.AddDays(-7),
+                        Description = "Description Five",
                         Hemoglobin = 11.9,
                         Hematocrit = 45.5,
                         WBCellsCount = 2.4,
@@ -109,12 +114,13 @@ namespace Persistence
                         AppUserId = "b"
 
                     },
-                       
+
                     new BloodWork
                     {
                         DateCreated = DateTime.Today,
                         ExamDate = DateTime.Today.AddDays(-8),
                         ResultsDate = DateTime.Today.AddDays(-6),
+                        Description = "Description Six",
                         Hemoglobin = 12.9,
                         Hematocrit = 44.5,
                         WBCellsCount = 2.3,
@@ -123,7 +129,7 @@ namespace Persistence
 
                     },
 
-                    
+
                 };
 
                 await context.BloodWorks.AddRangeAsync(bloodWorks);
